@@ -7,6 +7,7 @@ import configparser
 client = discord.Client()
 
 global version
+version = "Beta 1.0"
 
 # Setting the start time
 
@@ -53,6 +54,7 @@ Use !help [command] for more information
 """
 info_string = """
 Word Game Bot was developed by MrRiptide#7025
+It is currently in """ + str(version) + "."
 paused = "false"
 saved_stories = []
 
@@ -72,6 +74,7 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print("------")
+    print("Running version " + str(version) + " of word game bot")
     print("This process of the bot was started at " + startTimeStr)
 
 
@@ -237,6 +240,7 @@ def save(server_id):
     global version
     print(story)
     config = configparser.ConfigParser()
+    config['General'] = {"Config Version": str(version), 'Channel': word_game_channel, 'Moderator Roles': ",".join(moderator_roles), "Paused": paused}
     config["Saved"] = {"Saved Stories": ",".join(saved_stories)}
     with open("./servers/" + server_id + "/config.yml", "w") as configfile:
         config.write(configfile)
@@ -258,6 +262,7 @@ def load(server_id):
         global saved_stories
         config = configparser.ConfigParser()
         config.read("./servers/" + server_id + "/config.yml")
+        if config["General"]["Config Version"] == str(version):
             word_game_channel = config["General"]["Channel"]
             moderator_roles = config["General"]["Moderator Roles"].split(",")
             paused = config["General"]["Paused"]
