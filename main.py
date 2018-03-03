@@ -195,10 +195,10 @@ async def on_message(message):
                     await client.send_message(message.channel, "You do not have sufficient permissions!")
         elif message.channel.id == word_game_channel and paused == "false":
             words = message.content.split(" ")
-#            if message.author.id in recently_submitted:
-#                await client.delete_message(message)
-#                await client.send_message(message.channel, "Please wait for at least " + str(people_between) + " people to contribute before you contribute to the story again!")
-#                return
+            if message.author.id in recently_submitted:
+                await client.delete_message(message)
+                await client.send_message(message.channel, "Please wait for at least " + str(people_between) + " people to contribute before you contribute to the story again!")
+                return
             over_length = len(words) > 4
             is_four = len(words) == 4 and "." not in words
             under_length = len(words) < 3
